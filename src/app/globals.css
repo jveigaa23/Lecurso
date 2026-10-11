@@ -1,0 +1,136 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens — LeCurso
+ * Preto profundo + grafite como base, branco quente para texto
+ * e dourado discreto reservado a detalhes e chamadas para ação.
+ */
+@theme {
+  --color-ink: #0a0a0b;
+  --color-ink-2: #111113;
+  --color-graphite: #18181b;
+  --color-graphite-2: #212125;
+  --color-line: #2c2c31;
+  --color-line-strong: #3b3b41;
+  --color-mute: #8e8e96;
+  --color-soft: #bfbfc6;
+  --color-paper: #f3f1ec;
+  --color-gold: #c6a15b;
+  --color-gold-strong: #d9b878;
+  --color-gold-dim: #7d6638;
+  --color-danger: #e5484d;
+  --color-success: #3fb27f;
+
+  /* Painel administrativo (tema claro) */
+  --color-admin-bg: #f5f4f0;
+  --color-admin-surface: #ffffff;
+  --color-admin-line: #e3e1db;
+  --color-admin-text: #141416;
+  --color-admin-mute: #5d5d64;
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
+
+  --tracking-display: -0.035em;
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+  --animate-rise: rise 0.7s var(--ease-out-quart) both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  [data-theme="admin"] :focus-visible {
+    outline-color: #8a6a2c;
+  }
+
+  summary {
+    cursor: pointer;
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+@layer components {
+  /* Títulos de exibição: Archivo em largura condensada, peso forte. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-stretch: 78%;
+    letter-spacing: var(--tracking-display);
+    word-spacing: 0.08em;
+    line-height: 0.95;
+    text-wrap: balance;
+  }
+
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+
+  .prose-site {
+    color: var(--color-soft);
+    line-height: 1.75;
+  }
+  .prose-site p + p {
+    margin-top: 1.1em;
+  }
+
+  /* Textura sutil de linhas finas para painéis sem fotografia. */
+  .hairline-grid {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
