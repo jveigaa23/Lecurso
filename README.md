@@ -179,6 +179,19 @@ Use valores diferentes para *Preview* e *Production* na Vercel (ideal: um branch
 
 ## Banco de dados (Neon + Drizzle)
 
+### Estado atual
+
+Projeto Neon **`lecurso`** (`late-rice-37846602`), região **AWS São Paulo (sa-east-1)**, Postgres 16, compute 0,25 CU:
+
+| Branch | Uso | Situação |
+| --- | --- | --- |
+| `production` (padrão) | Produção | Migração `0000_init` aplicada e registrada em `drizzle.__drizzle_migrations`. **Sem dados** e sem administrador. |
+| `preview` | Ambiente Preview da Vercel / testes | Mesmo schema + dados de **demonstração**. Pode ser descartada e recriada a partir de `production`. |
+
+O schema de produção foi conferido contra o banco usado nos testes (impressão digital idêntica de colunas, restrições e índices), e as consultas principais e as restrições `CHECK`/`UNIQUE` foram validadas na branch `preview`.
+
+**Próximo passo:** criar o primeiro administrador na branch `production` (veja abaixo), copiando a connection string em *Neon → Connect* (escolha a branch `production`).
+
 ### Criar o banco no Neon
 
 1. Crie uma conta em [neon.tech](https://neon.tech) e um projeto (região sugerida: **AWS São Paulo – sa-east-1**, a mesma da função na Vercel).
