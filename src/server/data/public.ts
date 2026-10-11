@@ -72,9 +72,23 @@ export async function getPublishedCourses() {
 
 export type PublicCourse = Awaited<ReturnType<typeof getPublishedCourses>>[number];
 
+/**
+ * Busca por slug em uma entrada de cache própria (chaveada pelo slug).
+ * Não reutiliza a lista completa: na primeira visita a um curso recém-publicado
+ * (slug ausente no build), a lista pode vir do snapshot do build.
+ */
 export async function getPublishedCourseBySlug(slug: string): Promise<PublicCourse | null> {
-  const all = await getPublishedCourses();
-  return all.find((course) => course.slug === slug) ?? null;
+  "use cache";
+  cacheLife("hours");
+  cacheTag(TAGS.courses);
+  const [row] = await getDb()
+    .select(publicCourseColumns)
+    .from(courses)
+    .leftJoin(categories, eq(courses.categoryId, categories.id))
+    .where(and(eq(courses.slug, slug), eq(courses.isPublished, true)))
+    .limit(1);
+  if (!row) return null;
+  return { ...row, purchaseUrl: sanitizePurchaseUrl(row.purchaseUrl, getPurchaseAllowedHosts()) };
 }
 
 export async function getFeaturedCourses(limit = 3): Promise<PublicCourse[]> {

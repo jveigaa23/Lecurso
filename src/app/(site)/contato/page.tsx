@@ -79,7 +79,7 @@ export default async function ContactPage() {
       {channels.length ? (
         <ul className="mt-14 grid gap-4 md:grid-cols-2">
           {channels.map((channel) => (
-            <li key={channel.href}>
+            <li key={channel.href} className="min-w-0">
               <a
                 href={channel.href}
                 {...(channel.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}

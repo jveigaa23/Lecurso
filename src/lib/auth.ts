@@ -11,6 +11,11 @@ export const MIN_PASSWORD_LENGTH = 12;
 function createAuth() {
   const isProduction = process.env.NODE_ENV === "production";
   const siteUrl = getSiteUrl();
+  const secret = process.env.BETTER_AUTH_SECRET;
+  if (isProduction && (!secret || secret.length < 32)) {
+    // Falha segura: sem segredo forte, as sessões poderiam ser forjadas.
+    throw new Error("BETTER_AUTH_SECRET ausente ou fraco (mínimo 32 caracteres). Gere com: openssl rand -base64 32");
+  }
   const trustedOrigins = [siteUrl];
   if (process.env.VERCEL_BRANCH_URL) trustedOrigins.push(`https://${process.env.VERCEL_BRANCH_URL}`);
   if (process.env.VERCEL_URL) trustedOrigins.push(`https://${process.env.VERCEL_URL}`);
@@ -19,7 +24,7 @@ function createAuth() {
     appName: "LeCurso Admin",
     baseURL: siteUrl,
     basePath: "/api/auth",
-    secret: process.env.BETTER_AUTH_SECRET,
+    secret,
     trustedOrigins,
     database: drizzleAdapter(getDb(), {
       provider: "pg",
@@ -68,6 +73,9 @@ function createAuth() {
     advanced: {
       cookiePrefix: "lecurso",
       useSecureCookies: isProduction,
+      // Explícito: mantém a verificação de origem (CSRF) ativa em todos os ambientes,
+      // inclusive testes (o padrão do Better Auth a desativa quando NODE_ENV=test).
+      disableOriginCheck: false,
       defaultCookieAttributes: { httpOnly: true, sameSite: "lax", path: "/" },
       database: { generateId: "uuid" },
       ipAddress: {

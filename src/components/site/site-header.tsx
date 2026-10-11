@@ -53,57 +53,58 @@ function SiteHeaderShell({ brand, pathname }: { brand: React.ReactNode; pathname
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-40 transition-[background-color,border-color] duration-300",
-        scrolled || open ? "border-b border-line bg-ink/85 backdrop-blur-md" : "border-b border-transparent",
-      )}
-    >
-      <a
-        href="#conteudo"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-ink"
+    <>
+      <header
+        className={cn(
+          "sticky top-0 z-40 transition-[background-color,border-color] duration-300",
+          scrolled || open ? "border-b border-line bg-ink/85 backdrop-blur-md" : "border-b border-transparent",
+        )}
       >
-        Pular para o conteúdo
-      </a>
-      <div className="mx-auto flex h-18 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-10">
-        <Link href="/" aria-label="Página inicial" className="-m-1 p-1">
-          {brand}
-        </Link>
-
-        <nav aria-label="Principal" className="hidden items-center gap-1 md:flex">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={isActive(item.href) ? "page" : undefined}
-              className={cn(
-                "relative rounded-full px-4 py-2 text-sm font-medium transition-colors",
-                isActive(item.href) ? "text-paper" : "text-soft hover:text-paper",
-              )}
-            >
-              {item.label}
-              {isActive(item.href) ? (
-                <span aria-hidden className="absolute inset-x-4 -bottom-0.5 h-px bg-gold" />
-              ) : null}
-            </Link>
-          ))}
-          <Link href="/cursos" className={buttonClasses({ size: "sm", className: "ml-4" })}>
-            Ver cursos
-          </Link>
-        </nav>
-
-        <button
-          type="button"
-          className="-mr-2 inline-flex size-11 items-center justify-center rounded-full text-paper md:hidden"
-          aria-expanded={open}
-          aria-controls="menu-mobile"
-          aria-label={open ? "Fechar menu" : "Abrir menu"}
-          onClick={() => setOpen(!open)}
+        <a
+          href="#conteudo"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-ink"
         >
-          {open ? <X className="size-6" aria-hidden /> : <Menu className="size-6" aria-hidden />}
-        </button>
-      </div>
+          Pular para o conteúdo
+        </a>
+        <div className="mx-auto flex h-18 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-10">
+          <Link href="/" aria-label="Página inicial" className="-m-1 p-1">
+            {brand}
+          </Link>
 
+          <nav aria-label="Principal" className="hidden items-center gap-1 md:flex">
+            {NAV.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
+                className={cn(
+                  "relative rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                  isActive(item.href) ? "text-paper" : "text-soft hover:text-paper",
+                )}
+              >
+                {item.label}
+                {isActive(item.href) ? (
+                  <span aria-hidden className="absolute inset-x-4 -bottom-0.5 h-px bg-gold" />
+                ) : null}
+              </Link>
+            ))}
+            <Link href="/cursos" className={buttonClasses({ size: "sm", className: "ml-4" })}>
+              Ver cursos
+            </Link>
+          </nav>
+
+          <button
+            type="button"
+            className="-mr-2 inline-flex size-11 items-center justify-center rounded-full text-paper md:hidden"
+            aria-expanded={open}
+            aria-controls="menu-mobile"
+            aria-label={open ? "Fechar menu" : "Abrir menu"}
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <X className="size-6" aria-hidden /> : <Menu className="size-6" aria-hidden />}
+          </button>
+        </div>
+      </header>
       <div
         id="menu-mobile"
         hidden={!open}
@@ -127,6 +128,6 @@ function SiteHeaderShell({ brand, pathname }: { brand: React.ReactNode; pathname
           </Link>
         </nav>
       </div>
-    </header>
+    </>
   );
 }

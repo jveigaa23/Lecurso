@@ -29,7 +29,7 @@ export function LegalPage({
             {contact ? (
               <p>
                 Para dúvidas ou solicitações relacionadas a este documento, escreva para{" "}
-                <a className="text-gold underline-offset-4 hover:underline" href={`mailto:${contact}`}>
+                <a className="text-gold underline underline-offset-4 hover:text-gold-strong" href={`mailto:${contact}`}>
                   {contact}
                 </a>
                 .

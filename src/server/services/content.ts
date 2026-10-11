@@ -241,9 +241,11 @@ export async function listCategoriesForAdmin(db: Database) {
       name: categories.name,
       slug: categories.slug,
       sortOrder: categories.sortOrder,
-      courseCount: sql<number>`(select count(*)::int from ${courses} where ${courses.categoryId} = ${categories.id})`,
+      courseCount: sql<number>`count(${courses.id})::int`,
     })
     .from(categories)
+    .leftJoin(courses, eq(courses.categoryId, categories.id))
+    .groupBy(categories.id)
     .orderBy(asc(categories.sortOrder), asc(categories.name));
 }
 
